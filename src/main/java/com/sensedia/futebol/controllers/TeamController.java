@@ -30,8 +30,12 @@ public class TeamController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public Team getTeam(@PathVariable("id") Long id) {
-		return repository.findOne(id);
+	public Object getTeam(@PathVariable("id") Long id) {
+		Team team = repository.findOne(id);
+		if(Objects.nonNull(team))
+			return team;
+		else
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Response.build("RESULT", "TEAM NOT FOUND ID "+id));
 	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
