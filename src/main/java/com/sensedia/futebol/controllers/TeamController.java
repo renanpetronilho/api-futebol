@@ -1,19 +1,22 @@
 package com.sensedia.futebol.controllers;
 
-import com.sensedia.futebol.model.Player;
-import com.sensedia.futebol.model.Team;
-import com.sensedia.futebol.repository.TeamRepository;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.util.List;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Objects;
+import com.sensedia.futebol.model.Team;
+import com.sensedia.futebol.repository.TeamRepository;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * Created by renanpetronilho on 07/05/16.
@@ -26,7 +29,7 @@ public class TeamController {
 	@Autowired
 	private TeamRepository repository;
 
-	@ApiOperation(value = "Retorna uma lista de times.", response = List.class)
+	@ApiOperation(value = "Retorna uma lista de times.", response = Team.class, responseContainer = "List")
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public List<Team> getTeam() {
@@ -49,7 +52,11 @@ public class TeamController {
 	@ResponseBody
 	public Object postTeam(@RequestBody Team team) {
 		repository.save(team);
-		return ResponseEntity.status(HttpStatus.CREATED).body(Response.build("id", team.getId()));
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setLocation(ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(team.getId()).toUri());
+		return new ResponseEntity<>(team, httpHeaders, HttpStatus.CREATED);
 	}
 
 	@ApiOperation(value = "Atualiza o time de acordo com id.")
