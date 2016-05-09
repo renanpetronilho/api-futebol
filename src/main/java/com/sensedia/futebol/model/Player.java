@@ -1,5 +1,8 @@
 package com.sensedia.futebol.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -9,6 +12,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "T_PLAYER")
+@ApiModel(description = "Modelo para jogadores.")
 public class Player {
 
 	@Id
@@ -42,6 +46,7 @@ public class Player {
 	public Player() {
 	}
 
+	@ApiModelProperty(value = "Id do jogador")
 	public Long getId() {
 		return id;
 	}
@@ -50,6 +55,7 @@ public class Player {
 		this.id = id;
 	}
 
+	@ApiModelProperty(value = "Nome do jogador")
 	public String getName() {
 		return name;
 	}
@@ -58,6 +64,7 @@ public class Player {
 		this.name = name;
 	}
 
+	@ApiModelProperty(value = "Apelido do jogador")
 	public String getNickname() {
 		return nickname;
 	}
@@ -66,6 +73,7 @@ public class Player {
 		this.nickname = nickname;
 	}
 
+	@ApiModelProperty(value = "Data de nascimento do jogador")
 	public Date getBirthdate() {
 		return birthdate;
 	}
@@ -74,6 +82,7 @@ public class Player {
 		this.birthdate = birthdate;
 	}
 
+	@ApiModelProperty(value = "Time do jogador.")
 	public Team getTeam() {
 		return team;
 	}

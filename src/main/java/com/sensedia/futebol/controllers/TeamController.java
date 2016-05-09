@@ -1,7 +1,10 @@
 package com.sensedia.futebol.controllers;
 
+import com.sensedia.futebol.model.Player;
 import com.sensedia.futebol.model.Team;
 import com.sensedia.futebol.repository.TeamRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,17 +20,20 @@ import java.util.Objects;
  */
 @Controller
 @RequestMapping("/teams")
+@Api(value = "/teams", description = "Recurso responsavel por gerenciar operações relacionadas ao time")
 public class TeamController {
 
 	@Autowired
 	private TeamRepository repository;
 
+	@ApiOperation(value = "Retorna uma lista de times.", response = List.class)
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public List<Team> getTeam() {
 		return (List<Team>) repository.findAll();
 	}
 
+	@ApiOperation(value = "Retorna o time de acordo com ID.", response = Team.class)
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Object getTeam(@PathVariable("id") Long id) {
@@ -38,6 +44,7 @@ public class TeamController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Response.build("RESULT", "TEAM NOT FOUND ID "+id));
 	}
 
+	@ApiOperation(value = "Insere um novo time.", code = 201)
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object postTeam(@RequestBody Team team) {
@@ -45,6 +52,10 @@ public class TeamController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(Response.build("id", team.getId()));
 	}
 
+	@ApiOperation(value = "Atualiza o time de acordo com id.")
+	@io.swagger.annotations.ApiResponses(value = {
+			@io.swagger.annotations.ApiResponse(code = 200, message = "SUCCESS"),
+			@io.swagger.annotations.ApiResponse(code = 404, message = "TEAM NOT FOUND!") })
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object putTeam(@PathVariable("id") Long id, @RequestBody Team team) {
@@ -57,6 +68,10 @@ public class TeamController {
 		}
 	}
 
+	@ApiOperation(value = "Deleta o time de acordo com id.")
+	@io.swagger.annotations.ApiResponses(value = {
+			@io.swagger.annotations.ApiResponse(code = 200, message = "SUCCESS"),
+			@io.swagger.annotations.ApiResponse(code = 404, message = "TEAM NOT FOUND!") })
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public Object deleteTeam(@PathVariable("id") Long id) {

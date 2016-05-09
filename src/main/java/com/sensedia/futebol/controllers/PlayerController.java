@@ -3,6 +3,8 @@ package com.sensedia.futebol.controllers;
 import java.util.List;
 import java.util.Objects;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,11 +20,13 @@ import com.sensedia.futebol.repository.PlayerRepository;
  */
 @Controller
 @RequestMapping("/players")
+@Api(value = "/players", description = "Recurso responsavel por gerenciar operações relacionadas ao jogador")
 public class PlayerController {
 
 	@Autowired
 	private PlayerRepository repository;
 
+	@ApiOperation(value = "Insere um novo jogador.", code = 201)
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object postPlayer(@RequestBody Player player) {
@@ -30,6 +34,10 @@ public class PlayerController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(Response.build("id", player.getId()));
 	}
 
+	@ApiOperation(value = "Atualiza o jogador de acordo com id.")
+	@io.swagger.annotations.ApiResponses(value = {
+			@io.swagger.annotations.ApiResponse(code = 200, message = "SUCCESS"),
+			@io.swagger.annotations.ApiResponse(code = 404, message = "PLAYER NOT FOUND!") })
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object putPlayer(@PathVariable("id") Long id, @RequestBody Player player) {
@@ -42,22 +50,29 @@ public class PlayerController {
 		}
 	}
 
+	@ApiOperation(value = "Retorna uma lista de jogadores.")
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public List<Player> getPlayer() {
 		return (List<Player>) repository.findAll();
 	}
 
+	@ApiOperation(value = "Retorna o jogador de acordo com ID.", response = Player.class)
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Object getPlayer(@PathVariable("id") Long id) {
 		Player player = repository.findOne(id);
-		if(Objects.nonNull(player))
+		if (Objects.nonNull(player))
 			return repository.findOne(id);
 		else
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Response.build("RESULT", "PLAYER NOT FOUND ID "+id));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					Response.build("RESULT", "PLAYER NOT FOUND ID " + id));
 	}
 
+	@ApiOperation(value = "Deleta o jogador de acordo com id.")
+	@io.swagger.annotations.ApiResponses(value = {
+			@io.swagger.annotations.ApiResponse(code = 200, message = "SUCCESS"),
+			@io.swagger.annotations.ApiResponse(code = 404, message = "PLAYER NOT FOUND!") })
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public Object deletePlayer(@PathVariable("id") Long id) {
