@@ -1,0 +1,34 @@
+{
+  "id": "f6ccd9f0-9216-c669-f9bf-e7cedf5d9601",
+  "name": "API_DAY",
+  "values": [
+    {
+      "key": "JSON",
+      "value": "application/json",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "ID_SANTOS",
+      "value": "2",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "ID_PALMEIRAS",
+      "value": "1",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "NOVO_TIME",
+      "type": "text",
+      "value": "6",
+      "enabled": true
+    }
+  ],
+  "timestamp": 1473483717202,
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2016-09-10T05:09:48.498Z",
+  "_postman_exported_using": "Postman/4.7.0"
+}
