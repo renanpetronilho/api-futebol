@@ -10,13 +10,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.sensedia.futebol.model.Team;
 import com.sensedia.futebol.repository.TeamRepository;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * Created by renanpetronilho on 07/05/16.
@@ -47,7 +47,7 @@ public class TeamController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Response.build("RESULT", "TEAM NOT FOUND ID "+id));
 	}
 
-	@ApiOperation(value = "Insere um novo time.", code = 201)
+	@ApiOperation(value = "Insere um novo time.", code = 201, response = Team.class)
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object postTeam(@RequestBody Team team) {
